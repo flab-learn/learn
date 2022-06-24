@@ -7,7 +7,7 @@ class LearnApplicationTests {
 
 	@Test
 	void test() {
-		System.out.println("1 pr test");
+		System.out.println("2 pr test");
 	}
 
 }
