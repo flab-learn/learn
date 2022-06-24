@@ -14,26 +14,11 @@ public class CustomLinkedList<T> {
         this.tail = null;
     }
 
-    public void addFirst(T data) {
-        Node<T> newNode = new Node<>(data);
-        newNode.next = head;
-        head = newNode;
-        size++;
-        if (head.next == null) {
-            tail = head;
-        }
+    public boolean add(T data) {
+        addLast(data);
+        return true;
     }
 
-    public void addLast(T data) {
-        if (size <= 0) {
-            addFirst(data);
-            return;
-        }
-        Node<T> newNode = new Node<>(data);
-        tail.next = newNode;
-        tail = newNode;
-        size++;
-    }
 
     public void add(int index, T data) {
         if (index == 0) {
@@ -53,11 +38,6 @@ public class CustomLinkedList<T> {
         size++;
     }
 
-    public boolean add(T data) {
-        addLast(data);
-        return true;
-    }
-
     public boolean addAll(Collection<T> c) {
         for (T t : c) {
             addLast(t);
@@ -71,6 +51,27 @@ public class CustomLinkedList<T> {
             index++;
         }
         return true;
+    }
+
+    public void addFirst(T data) {
+        Node<T> newNode = new Node<>(data);
+        newNode.next = head;
+        head = newNode;
+        size++;
+        if (head.next == null) {
+            tail = head;
+        }
+    }
+
+    public void addLast(T data) {
+        if (size <= 0) {
+            addFirst(data);
+            return;
+        }
+        Node<T> newNode = new Node<>(data);
+        tail.next = newNode;
+        tail = newNode;
+        size++;
     }
 
     private Node<T> access(int index) {
@@ -100,6 +101,7 @@ public class CustomLinkedList<T> {
     public boolean offer(T t) {
         return add(t);
     }
+
     public boolean offerFirst(T t) {
         addFirst(t);
         return true;
@@ -110,8 +112,19 @@ public class CustomLinkedList<T> {
         return true;
     }
 
+    //O(n)
     public boolean contains(Object o) {
         return indexOf(o) >= 0;
+    }
+
+    //O(nm)
+    public boolean containsAll(Collection<T> c) {
+        for (T t : c) {
+            if (!contains(t)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int indexOf(Object o) {
@@ -130,6 +143,125 @@ public class CustomLinkedList<T> {
             }
         }
         return -1;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public T get(int index) {
+        Node<T> node = access(index);
+        return node.data;
+    }
+
+    public T getFirst() {
+        return get(0);
+    }
+
+    public T getLast() {
+        return get(size - 1);
+    }
+
+    public T peek() {
+        return (head == null) ? null : head.data;
+    }
+
+    public T peekFirst() {
+        return peek();
+    }
+
+    public T peekLast() {
+        return (tail == null) ? null : tail.data;
+    }
+
+    public T poll() {
+        return (head == null) ? null : remove(0);
+    }
+
+    public T pollFirst() {
+        return poll();
+    }
+
+    public T pollLast() {
+        return (head == null) ? null : remove(size - 1);
+    }
+
+    public T pop() {
+        Node<T> currNode = head;
+        removeFirst();
+        return currNode.data;
+    }
+
+    public void push(T t) {
+        addFirst(t);
+    }
+
+    public T remove(int index) {
+        Node<T> currNode = access(index);
+        if (index <= 0) {
+            removeFirst();
+            return currNode.data;
+        }
+        Node<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
+        prevNode.next = access(index + 1); // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
+        size--;
+        return currNode.data;
+    }
+
+    public boolean remove(Object o) {
+        int targetIndex = indexOf(o);
+        if (targetIndex < 0) {
+            return false;
+        }
+        return remove(targetIndex) != null;
+    }
+
+    public boolean removeFirst() {
+        if (head == null) {
+            return false;
+        }
+        head = access(1);
+        size--;
+        return true;
+    }
+
+    public boolean removeLast() {
+        if (head == null) {
+            return false;
+        }
+        tail = access(size - 1);
+        size--;
+        return true;
+    }
+
+    public boolean removeAll(Collection<T> c) {
+        for (T t : c) {
+            if (!remove(t)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public T set(int index, T t) {
+        Node<T> currNode = access(index);
+        Node<T> currNodeTemp = currNode;
+        currNode.data = t;
+        return currNodeTemp.data;
+    }
+
+    // 이건 없습니다만 ArrayList랑 비슷하게 구현해본다면?
+    public LinkedList<T> subList(int from, int to) {
+        LinkedList<T> rtnList = new LinkedList<>();
+        for (int i = from, j = 0; i < to; i++, j++) {
+            rtnList.add(j, access(i).data);
+        }
+        return rtnList;
+    }
+
+
+    public int size() {
+        return size;
     }
 }
 
