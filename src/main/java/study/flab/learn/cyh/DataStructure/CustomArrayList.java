@@ -12,11 +12,13 @@ public class CustomArrayList<E> {
         this.elements = new Object[DEFAULT_CAPACITY];
     }
 
+
     public CustomArrayList(int capacity) {
         if (capacity > 0) {
             this.elements = new Object[capacity];
         } else if (capacity == 0) {
             this.elements = new Object[DEFAULT_CAPACITY];
+
         }
     }
 
