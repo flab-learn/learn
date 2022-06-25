@@ -9,11 +9,13 @@ public class CustomLinkedList<E> {
     Node<E> tail;
     int size;
 
+    // O(1)
     boolean add(E e) {
         addLast(e);
         return true;
     }
 
+    // 처음, 끝: O(1) / 중간: O(n)
     void add(int index, E e) {
         if(index < 0) {
             return;
@@ -32,6 +34,7 @@ public class CustomLinkedList<E> {
         }
     }
 
+    // O(n)
     boolean addAll(Collection<E> c) {
         for(E e : c) {
             addLast(e);
@@ -39,6 +42,7 @@ public class CustomLinkedList<E> {
         return true;
     }
 
+    // O(n)
     boolean addAll(int index, Collection<E> c) {
         Node<E> fNode = findNode(index);
         if(fNode == null) {
@@ -50,7 +54,6 @@ public class CustomLinkedList<E> {
         for(E e : c) {
             Node<E> node = new Node<>(e, null, iter.next);
             iter.next = node;
-
             iter = node;
         }
         iter.next = fNext;
@@ -58,6 +61,7 @@ public class CustomLinkedList<E> {
         return true;
     }
 
+    // O(1)
     void addFirst(E e) {
         Node<E> node = new Node<>(e, head, null);
 
@@ -71,6 +75,7 @@ public class CustomLinkedList<E> {
         size++;
     }
 
+    // O(1)
     void addLast(E e) {
         if(size <= 0) {
             addFirst(e);
@@ -83,21 +88,25 @@ public class CustomLinkedList<E> {
         size++;
     }
 
+    // O(1)
     boolean offer(E e) {
         addLast(e);
         return true;
     }
 
+    // O(1)
     boolean offerFirst(E e) {
         addFirst(e);
         return true;
     }
 
+    // O(1)
     boolean offerLast(E e) {
         addLast(e);
         return  true;
     }
 
+    // O(n)
     boolean contains(Object o) {
         int index = findIndex(o);
         if(index == size)
@@ -105,6 +114,7 @@ public class CustomLinkedList<E> {
         return true;
     }
 
+    // O(n^2)
     boolean containsAll(Collection<E> c) {
         for(E e : c) {
             if(!contains(e)) {
@@ -114,6 +124,7 @@ public class CustomLinkedList<E> {
         return true;
     }
 
+    // O(n)
     int indexOf(Object o) {
         int index = findIndex(o);
         if(index == size)
@@ -125,6 +136,7 @@ public class CustomLinkedList<E> {
         return size <= 0;
     }
 
+    // O(n)
     E get(int index) {
         Node<E> fNode = findNode(index);
         if(fNode != null) {
@@ -133,6 +145,7 @@ public class CustomLinkedList<E> {
         return null;
     }
 
+    // O(1)
     E getFirst() {
         if(head != null) {
             return head.data;
@@ -140,6 +153,7 @@ public class CustomLinkedList<E> {
         throw new NoSuchElementException();
     }
 
+    // O(1)
     E getLast() {
         if(tail != null) {
             return tail.data;
@@ -147,6 +161,7 @@ public class CustomLinkedList<E> {
         throw new NoSuchElementException();
     }
 
+    // O(1)
     E peek() {
         if(head != null) {
             return head.data;
@@ -154,6 +169,7 @@ public class CustomLinkedList<E> {
         return null;
     }
 
+    // O(1)
     E peekFirst() {
         if(size <= 0) {
             return null;
@@ -161,6 +177,7 @@ public class CustomLinkedList<E> {
         return getFirst();
     }
 
+    // O(1)
     E peekLast() {
         if(size <= 0) {
             return null;
@@ -168,6 +185,7 @@ public class CustomLinkedList<E> {
         return getLast();
     }
 
+    // O(1)
     E poll() {
         if(size <= 0) {
             return null;
@@ -186,10 +204,12 @@ public class CustomLinkedList<E> {
 
     }
 
+    // O(1)
     E pollFirst() {
         return poll();
     }
 
+    // O(1)
     E pollLast() {
         if(size <= 0) {
             return null;
@@ -214,6 +234,7 @@ public class CustomLinkedList<E> {
         addFirst(e);
     }
 
+    // O(n)
     E remove(int index) {
         Node<E> fNode = findNode(index);
         if(fNode != null) {
@@ -231,6 +252,7 @@ public class CustomLinkedList<E> {
         throw new NoSuchElementException();
     }
 
+    // O(n)
     boolean remove(Object o) {
         int index = indexOf(o);
         E e = remove(index);
@@ -240,6 +262,7 @@ public class CustomLinkedList<E> {
         return false;
     }
 
+    // O(1)
     E removeFirst() {
         if(size <= 0) {
             throw new NoSuchElementException();
@@ -247,6 +270,7 @@ public class CustomLinkedList<E> {
         return poll();
     }
 
+    // O(1)
     E removeLast() {
         if(size <= 0) {
             throw new NoSuchElementException();
@@ -254,6 +278,7 @@ public class CustomLinkedList<E> {
         return pollLast();
     }
 
+    // O(n)
     boolean removeAll(Collection<E> c) {
         for(E e : c) {
             if(!remove(e)) {
@@ -263,12 +288,14 @@ public class CustomLinkedList<E> {
         return true;
     }
 
+    // O(n)
     E set(int index, E e) {
         Node<E> fNode = findNode(index);
         fNode.data = e;
         return fNode.data;
     }
 
+    // O(n)
     ArrayList<E> subList(int from, int to) {
         ArrayList<E> list = new ArrayList<>();
         int index = from;
@@ -324,4 +351,17 @@ public class CustomLinkedList<E> {
 
         return checkIndex;
     }
+}
+
+class Node<E> {
+
+    public Node(E data, Node<E> next, Node<E> prev) {
+        this.data = data;
+        this.next = next;
+        this.prev = prev;
+    }
+
+    public E data;
+    public Node<E> next;
+    public Node<E> prev;
 }
