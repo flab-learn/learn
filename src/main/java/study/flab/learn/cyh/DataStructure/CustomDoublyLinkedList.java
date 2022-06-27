@@ -1,14 +1,16 @@
 package study.flab.learn.cyh.DataStructure;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Objects;
 
-public class CustomLinkedList<T> {
+public class CustomDoublyLinkedList<T> {
 
     private int size;
     private CustomDoublyNode<T> head;
     private CustomDoublyNode<T> tail;
 
-    public CustomLinkedList() {
+    public CustomDoublyLinkedList() {
         this.size = 0;
         this.head = null;
         this.tail = null;
@@ -80,7 +82,17 @@ public class CustomLinkedList<T> {
             throw new IndexOutOfBoundsException();
         }
 
-        CustomDoublyNode<T> currNode = head;
+        CustomDoublyNode<T> currNode;
+        // 뒤에서부터 접근하는 경우
+        if (index > size/2) {
+            currNode = tail;
+            for (int i = size-1; i > index; i--) {
+                currNode = currNode.prev;
+            }
+            return currNode;
+        }
+
+        currNode = head;
         for (int i = 0; i < index; i++) {
             currNode = currNode.next;
         }
@@ -134,9 +146,9 @@ public class CustomLinkedList<T> {
 
     public int indexOf(Object o) {
         int index = 0;
-        if (o == null) {
+        if (Objects.isNull(o)) {
             for (CustomDoublyNode<T> node = head; node != null; node = node.next) {
-                if (node.data == null)
+                if (Objects.isNull(node.data))
                     return index;
                 index++;
             }
@@ -222,7 +234,7 @@ public class CustomLinkedList<T> {
     }
 
     public boolean removeFirst() {
-        if (head == null) {
+        if (Objects.isNull(head)) {
             return false;
         }
         head = access(1);
@@ -231,7 +243,7 @@ public class CustomLinkedList<T> {
     }
 
     public boolean removeLast() {
-        if (head == null) {
+        if (Objects.isNull(head)) {
             return false;
         }
         tail = access(size - 1);
@@ -270,13 +282,15 @@ public class CustomLinkedList<T> {
     }
 }
 
-class CustomNode<T> {
+class CustomDoublyNode<T> {
     T data;
     CustomDoublyNode<T> next;
+    CustomDoublyNode<T> prev;
 
-    public CustomNode(T data) {
+    public CustomDoublyNode(T data) {
         this.data = data;
         this.next = null;
+        this.prev = null;
     }
 
 }

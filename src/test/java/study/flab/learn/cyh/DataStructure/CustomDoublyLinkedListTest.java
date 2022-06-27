@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CustomLinkedListTest {
+class CustomDoublyLinkedListTest {
 
     private CustomDoublyLinkedList customLinkedList;
     private List javaLinkedList;
