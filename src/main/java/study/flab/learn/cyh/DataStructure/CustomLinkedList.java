@@ -5,8 +5,8 @@ import java.util.*;
 public class CustomLinkedList<T> {
 
     private int size;
-    private CustomDoublyNode<T> head;
-    private CustomDoublyNode<T> tail;
+    private CustomNode<T> head;
+    private CustomNode<T> tail;
 
     public CustomLinkedList() {
         this.size = 0;
@@ -29,9 +29,9 @@ public class CustomLinkedList<T> {
             addLast(data);
             return;
         }
-        CustomDoublyNode<T> prevNode = access(index - 1);  // 추가하려는 위치의 이전 노드
-        CustomDoublyNode<T> currNode = prevNode.next;  // 추가하려는 위치의 노드
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data); // 추가하려는 노드
+        CustomNode<T> prevNode = access(index - 1);  // 추가하려는 위치의 이전 노드
+        CustomNode<T> currNode = prevNode.next;  // 추가하려는 위치의 노드
+        CustomNode<T> newNode = new CustomNode<>(data); // 추가하려는 노드
 
         prevNode.next = newNode; // 이전 노드의 다음 노드를 새 노드로 변경
         newNode.next = currNode; // 새 노드의 다음 노드를 현재 노드로 변경
@@ -54,7 +54,7 @@ public class CustomLinkedList<T> {
     }
 
     public void addFirst(T data) {
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
+        CustomNode<T> newNode = new CustomNode<>(data);
         newNode.next = head;
         head = newNode;
         size++;
@@ -68,19 +68,19 @@ public class CustomLinkedList<T> {
             addFirst(data);
             return;
         }
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
+        CustomNode<T> newNode = new CustomNode<>(data);
         tail.next = newNode;
         tail = newNode;
         size++;
     }
 
-    private CustomDoublyNode<T> access(int index) {
+    private CustomNode<T> access(int index) {
         //범위 밖인 경우 처리
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
 
-        CustomDoublyNode<T> currNode = head;
+        CustomNode<T> currNode = head;
         for (int i = 0; i < index; i++) {
             currNode = currNode.next;
         }
@@ -90,7 +90,7 @@ public class CustomLinkedList<T> {
 
     public String toString() {
         StringBuilder sum = new StringBuilder();
-        CustomDoublyNode<T> currNode = head;
+        CustomNode<T> currNode = head;
         for (int i = 0; i < size; i++) {
             sum.append(currNode.data);
             if (i < size - 1) {
@@ -135,13 +135,13 @@ public class CustomLinkedList<T> {
     public int indexOf(Object o) {
         int index = 0;
         if (o == null) {
-            for (CustomDoublyNode<T> node = head; node != null; node = node.next) {
+            for (CustomNode<T> node = head; node != null; node = node.next) {
                 if (node.data == null)
                     return index;
                 index++;
             }
         } else {
-            for (CustomDoublyNode<T> node = head; node != null; node = node.next) {
+            for (CustomNode<T> node = head; node != null; node = node.next) {
                 if (o.equals(node.data))
                     return index;
                 index++;
@@ -155,7 +155,7 @@ public class CustomLinkedList<T> {
     }
 
     public T get(int index) {
-        CustomDoublyNode<T> node = access(index);
+        CustomNode<T> node = access(index);
         return node.data;
     }
 
@@ -192,7 +192,7 @@ public class CustomLinkedList<T> {
     }
 
     public T pop() {
-        CustomDoublyNode<T> currNode = head;
+        CustomNode<T> currNode = head;
         removeFirst();
         return currNode.data;
     }
@@ -202,12 +202,12 @@ public class CustomLinkedList<T> {
     }
 
     public T remove(int index) {
-        CustomDoublyNode<T> currNode = access(index);
+        CustomNode<T> currNode = access(index);
         if (index <= 0) {
             removeFirst();
             return currNode.data;
         }
-        CustomDoublyNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
+        CustomNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
         prevNode.next = access(index + 1); // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
         size--;
         return currNode.data;
@@ -249,8 +249,8 @@ public class CustomLinkedList<T> {
     }
 
     public T set(int index, T t) {
-        CustomDoublyNode<T> currNode = access(index);
-        CustomDoublyNode<T> currNodeTemp = currNode;
+        CustomNode<T> currNode = access(index);
+        CustomNode<T> currNodeTemp = currNode;
         currNode.data = t;
         return currNodeTemp.data;
     }
@@ -272,7 +272,7 @@ public class CustomLinkedList<T> {
 
 class CustomNode<T> {
     T data;
-    CustomDoublyNode<T> next;
+    CustomNode<T> next;
 
     public CustomNode(T data) {
         this.data = data;

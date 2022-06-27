@@ -37,6 +37,13 @@ public class CustomDoublyLinkedList<T> {
 
         prevNode.next = newNode; // 이전 노드의 다음 노드를 새 노드로 변경
         newNode.next = currNode; // 새 노드의 다음 노드를 현재 노드로 변경
+
+        //doubly
+        if (!Objects.isNull(currNode)) {
+            currNode.prev = newNode;
+        }
+        newNode.prev = prevNode;
+
         size++;
     }
 
@@ -58,6 +65,12 @@ public class CustomDoublyLinkedList<T> {
     public void addFirst(T data) {
         CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
         newNode.next = head;
+
+        //doubly
+        if(head != null) {
+            head.prev = newNode;
+        }
+
         head = newNode;
         size++;
         if (head.next == null) {
@@ -72,6 +85,10 @@ public class CustomDoublyLinkedList<T> {
         }
         CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
         tail.next = newNode;
+
+        //doubly
+        newNode.prev = tail;
+
         tail = newNode;
         size++;
     }
@@ -221,6 +238,13 @@ public class CustomDoublyLinkedList<T> {
         }
         CustomDoublyNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
         prevNode.next = access(index + 1); // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
+
+        //doubly
+        if (!Objects.isNull(prevNode.next)) {
+            // 삭제할 노드의 전후 노드를 연결
+            prevNode.next.prev = prevNode;
+        }
+
         size--;
         return currNode.data;
     }
@@ -235,6 +259,9 @@ public class CustomDoublyLinkedList<T> {
 
     public boolean removeFirst() {
         if (Objects.isNull(head)) {
+            //doubly
+            head.prev = null;
+
             return false;
         }
         head = access(1);
