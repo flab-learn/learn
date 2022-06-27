@@ -269,8 +269,8 @@ class CustomArrayListTest {
         customList.remove(1);
         assertTrue(customList.toString().contains("1번, 3번"));
         assertThat(customList.size()).isEqualTo(2);
-        customList.remove(1);
-        assertTrue(customList.toString().contains("1번"));
+        customList.remove(0);
+        assertTrue(customList.toString().contains("3번"));
         assertThat(customList.size()).isEqualTo(1);
     }
 
