@@ -18,6 +18,10 @@ public class CustomArrayList<E> {
     }
 
     public CustomArrayList(int capacity) {
+        if(capacity < 1) {
+            capacity = DEFAULT_CAPACITY;
+        }
+
         this.capacity = capacity;
         array = new Object[capacity];
         lastIndex= 0;
@@ -26,7 +30,7 @@ public class CustomArrayList<E> {
     // O(1)
     public boolean add(E data) {
         if(capacity <= lastIndex) {
-            ReAllocCapacity();
+            reAllocCapacity();
         }
         array[lastIndex++] = data;
         return true;
@@ -35,7 +39,7 @@ public class CustomArrayList<E> {
     // O(n);
     public void add(int index, E data) {
         if(capacity <= lastIndex) {
-            ReAllocCapacity();
+            reAllocCapacity();
         }
         for(int i = lastIndex; i > index; i--) {
             array[i] = array[i - 1];
@@ -45,22 +49,23 @@ public class CustomArrayList<E> {
     }
 
     // O(n^2)
-    public boolean addAll(Collection c) {
-        for(Object o : c) {
-            add((E)o);
+    public boolean addAll(Collection<E> c) {
+        for(E e : c) {
+            add(e);
         }
         return true;
     }
 
-    // O(n^2)
-    public boolean addAll(int index, Collection c) {
+    // O(1)
+    // 기존 배열에 add배열을 더한다.
+    public boolean addAll(int index, Collection<E> c) {
+        Object[] addArray = c.toArray();
         int size = c.size();
-        for(int i = lastIndex - 1; i >= index; i--) {
-            add(i + size, (E)array[i]);
+        if(capacity <= lastIndex + size) {
+            reAllocCapacity();
         }
-        for(Object o : c) {
-            array[index++] = o;
-        }
+
+        System.arraycopy(addArray, 0, array, lastIndex, size);
         return true;
     }
 
@@ -74,7 +79,7 @@ public class CustomArrayList<E> {
     }
 
     // O(n^2)
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(Collection<E> c) {
         for(Object o : c) {
             if(!contains(o))
                 return false;
@@ -110,11 +115,15 @@ public class CustomArrayList<E> {
         return data;
     }
 
-    // O(n^2)
+    // O(n)
+    // 기존 배열을 o를 제외한 배열로 이어붙인다.
     public boolean remove(Object o) {
         for(int i = 0; i < lastIndex; i++) {
             if(array[i].equals(o)) {
-                remove(i);
+                int size = lastIndex;
+                System.arraycopy(array, i + 1, array, i, size - i);
+                lastIndex = size - 1;
+                array[lastIndex] = null;
                 return true;
             }
         }
@@ -122,7 +131,7 @@ public class CustomArrayList<E> {
     }
 
     // O(n^2)
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(Collection<E> c) {
         for(Object o : c) {
             if(!remove(o))
                 return false;
@@ -147,7 +156,7 @@ public class CustomArrayList<E> {
     }
 
     // 추가 구현 - 배열 크기 재할당
-    private void ReAllocCapacity() {
+    private void reAllocCapacity() {
         capacity *= 2;
         Object[] newArray = new Object[capacity];
         for(int i = 0; i < lastIndex; i++) {
