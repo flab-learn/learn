@@ -136,7 +136,7 @@ class CustomArrayListTest {
         customList.add(params[8]);
         customList.add(params[9]);
         customList.addAll(5, customListAddAllTest1);
-        System.out.println(customList.toString());
+//        System.out.println(customList.toString());
 //        assertTrue(customList.toString().contains("3번, 3번, 3번, 4번, 5번, 1번, 2번, 6번, 7번, 8번, 9번"));
     }
 

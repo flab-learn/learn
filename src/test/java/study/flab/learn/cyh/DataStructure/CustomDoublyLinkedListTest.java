@@ -188,11 +188,14 @@ class CustomDoublyLinkedListTest {
 
     @Test
     void removeTotalTest() {
-        customLinkedList.add("1");
-        customLinkedList.add("2");
-        customLinkedList.add("3");
-        customLinkedList.add("4");
-        customLinkedList.add("5");
+//        javaLinkedList.add("1");
+//        javaLinkedList.add("2");
+//        javaLinkedList.add("3");
+//        javaLinkedList.add("4");
+//        javaLinkedList.add("5");
+//        System.out.println(javaLinkedList.remove(0));
+//        System.out.println(javaLinkedList.toString());
+//        assertThat(javaLinkedList.toString()).isEqualTo("[2, 3, 4, 5]");
 
 //        System.out.println(customLinkedList.remove(0));
 //        assertThat(customLinkedList.toString()).isEqualTo("2,3,4,5");
@@ -203,11 +206,18 @@ class CustomDoublyLinkedListTest {
 //        System.out.println(customLinkedList.remove("4"));
 //        assertThat(customLinkedList.toString()).isEqualTo("3");
 
+        customLinkedList.add("1");
+        customLinkedList.add("2");
+        customLinkedList.add("3");
+        customLinkedList.add("4");
+        customLinkedList.add("5");
         customLinkedList.remove(0);
         assertThat(customLinkedList.toString()).isEqualTo("2,3,4,5");
         customLinkedList.removeFirst();
+//        System.out.println(customLinkedList.toString());
         assertThat(customLinkedList.toString()).isEqualTo("3,4,5");
         customLinkedList.removeLast();
+//        System.out.println(customLinkedList.toString());
         assertThat(customLinkedList.toString()).isEqualTo("3,4");
         customLinkedList.remove("4");
         assertThat(customLinkedList.toString()).isEqualTo("3");

@@ -12,7 +12,6 @@ class LearnApplicationTests {
 	void test() {
 		List lst = new LinkedList();
 		lst.isEmpty();
-		System.out.println("2 pr test");
 	}
 
 }

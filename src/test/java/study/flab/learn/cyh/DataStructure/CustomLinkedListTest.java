@@ -10,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomLinkedListTest {
 
-    private CustomDoublyLinkedList customLinkedList;
+    private CustomLinkedList customLinkedList;
     private List javaLinkedList;
 
 
     @BeforeEach
     void setUp() {
         javaLinkedList = new LinkedList();
-        customLinkedList = new CustomDoublyLinkedList();
+        customLinkedList = new CustomLinkedList();
 
     }
 
