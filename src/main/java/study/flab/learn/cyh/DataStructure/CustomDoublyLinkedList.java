@@ -71,7 +71,7 @@ public class CustomDoublyLinkedList<T> {
             head.prev = newNode;
         }
 
-        head = newNode;
+        head = newNode; //First에 노드가 추가되었으므로, head가 가리키는 노드 변경해준다
         size++;
         if (head.next == null) {
             tail = head;
@@ -89,7 +89,7 @@ public class CustomDoublyLinkedList<T> {
         //doubly
         newNode.prev = tail;
 
-        tail = newNode;
+        tail = newNode; //Last에 노드가 추가되었으므로, tail이 가리키는 노드 변경해준다
         size++;
     }
 
@@ -230,23 +230,37 @@ public class CustomDoublyLinkedList<T> {
         addFirst(t);
     }
 
+    /**
+     * 2022.06.27
+     * currNode가 doubly linked에서는 앞 뒤 노드 정보를 들고 있기 때문에
+     * 새로 index로 참조하는 것을 피할 수 있습니다.
+     * index로 접근하는 형태는 linked list에서 비효율적이거든요
+     */
     public T remove(int index) {
-        CustomDoublyNode<T> currNode = access(index);
         if (index <= 0) {
+            String strRtn = head==null ? null : String.valueOf(head.data);
             removeFirst();
-            return currNode.data;
+            return (T) strRtn;
         }
-        CustomDoublyNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
-        prevNode.next = access(index + 1); // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
+        if (index == size) {
+            String strRtn = tail==null ? null : String.valueOf(tail.data);
+            removeLast();
+            return (T) strRtn;
+        }
 
         //doubly
+        CustomDoublyNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
+//        CustomDoublyNode<T> currNode = prevNode.next;   // 삭제하려는 위치의 노드(현재노드)
+        String strRtn = String.valueOf(prevNode.next.data); // 삭제하려는 위치의 노드의 data(현재노드의 data)
+
+        // 삭제할 노드(현재노드)의 전후 노드를 연결
+        prevNode.next = prevNode.next.next; // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
         if (!Objects.isNull(prevNode.next)) {
-            // 삭제할 노드의 전후 노드를 연결
-            prevNode.next.prev = prevNode;
+            prevNode.next.prev = prevNode;  //prevNode.next.prev == currNode.prev
         }
 
         size--;
-        return currNode.data;
+        return (T) strRtn;
     }
 
     public boolean remove(Object o) {
@@ -261,19 +275,31 @@ public class CustomDoublyLinkedList<T> {
         if (Objects.isNull(head)) {
             //doubly
             head.prev = null;
-
+            head.next = null;
             return false;
         }
-        head = access(1);
+
+        //doubly
+        head = access(1);   //First에 노드가 삭제되었으므로, head가 가리키는 노드 변경해준다
+        if (!Objects.isNull(head)) {
+            head.prev = null;
+        }
+
         size--;
         return true;
     }
 
     public boolean removeLast() {
-        if (Objects.isNull(head)) {
+        if (Objects.isNull(tail)) {
             return false;
         }
-        tail = access(size - 1);
+
+        //doubly
+        tail = access(size - 1);    //Last에 노드가 삭제되었으므로, tail이 가리키는 노드 변경해준다
+        if (!Objects.isNull(tail)) {
+            tail.next = null;
+        }
+
         size--;
         return true;
     }
