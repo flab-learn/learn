@@ -102,12 +102,12 @@ public class CustomArrayList<E> {
 
     // O(1)
     public E get(int index) {
-        return (E)array[index];
+        return (E) array[index];
     }
 
     // O(n)
     public E remove(int index) {
-        E data = (E)array[index];
+        E data = (E) array[index];
         for(int i = index; i < lastIndex - 1; i++) {
             array[i] = array[i + 1];
         }
@@ -142,7 +142,7 @@ public class CustomArrayList<E> {
     // O(1)
     public E set(int index, E data) {
         array[index] = data;
-        return (E)array[index];
+        return (E) array[index];
     }
 
     // O(n^2)
