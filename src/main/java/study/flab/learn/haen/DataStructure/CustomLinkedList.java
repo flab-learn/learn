@@ -326,7 +326,7 @@ public class CustomLinkedList<E> {
 
     // 추가 구현 - sentinel
     void linkedSentinel(Object data) {
-        tail.next = new Node<>((E)data, null, tail.next);
+        tail.next = new Node<>((E) data, null, tail.next);
     }
 
     void unlinkedSentinel() {
