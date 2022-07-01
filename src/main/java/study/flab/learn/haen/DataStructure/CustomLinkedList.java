@@ -83,7 +83,7 @@ public class CustomLinkedList<E> {
         }
 
         Node<E> node = new Node<E>(e, null, tail);
-        tail.prev = node;
+        tail.next = node;
         tail = node;
         size++;
     }
@@ -109,7 +109,7 @@ public class CustomLinkedList<E> {
     // O(n)
     boolean contains(Object o) {
         int index = findIndex(o);
-        if(index == size)
+        if(index == -1)
             return false;
         return true;
     }
@@ -127,7 +127,7 @@ public class CustomLinkedList<E> {
     // O(n)
     int indexOf(Object o) {
         int index = findIndex(o);
-        if(index == size)
+        if(index == -1)
             return -1;
         return index;
     }
@@ -238,15 +238,9 @@ public class CustomLinkedList<E> {
     E remove(int index) {
         Node<E> fNode = findNode(index);
         if(fNode != null) {
-            Node<E> fPrev = fNode.prev;
-            Node<E> fNext = fNode.next;
-
-            fPrev.next = fNext;
-            fNext.prev = fPrev;
-
             E data = fNode.data;
-            fNode = null;
-            size--;
+            unlinkedNode(fNode);
+
             return data;
         }
         throw new NoSuchElementException();
@@ -254,12 +248,28 @@ public class CustomLinkedList<E> {
 
     // O(n)
     boolean remove(Object o) {
-        int index = indexOf(o);
-        E e = remove(index);
-        if(e != null) {
-            return true;
+        Node<E> node = head;
+        while(node != null) {
+            if(node.equals(o)) {
+                unlinkedNode(node);
+                return true;
+            }
+            node = node.next;
         }
+
         return false;
+    }
+
+    void unlinkedNode(Node<E> node)
+    {
+        Node<E> fPrev = node.prev;
+        Node<E> fNext = node.next;
+
+        fPrev.next = fNext;
+        fNext.prev = fPrev;
+
+        node = null;
+        size--;
     }
 
     // O(1)
@@ -348,6 +358,9 @@ public class CustomLinkedList<E> {
         }
 
         unlinkedSentinel();
+
+        if(checkIndex == size)
+            return -1;
 
         return checkIndex;
     }
