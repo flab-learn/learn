@@ -41,6 +41,11 @@ public class CustomArrayList<E> {
         if(capacity <= lastIndex) {
             reAllocCapacity();
         }
+
+        // 재할당을 했지만 크기를 넘어가는 경우
+        if(capacity <= index)
+            return;
+
         for(int i = lastIndex; i > index; i--) {
             array[i] = array[i - 1];
         }
@@ -102,11 +107,17 @@ public class CustomArrayList<E> {
 
     // O(1)
     public E get(int index) {
+        if(index <= 0 || lastIndex <= index)
+            return null;
+
         return (E) array[index];
     }
 
     // O(n)
     public E remove(int index) {
+        if(index <= 0 || lastIndex <= index)
+            return null;
+
         E data = (E) array[index];
         for(int i = index; i < lastIndex - 1; i++) {
             array[i] = array[i + 1];
@@ -141,6 +152,9 @@ public class CustomArrayList<E> {
 
     // O(1)
     public E set(int index, E data) {
+        if(index <= 0 || lastIndex <= index)
+            return null;
+
         array[index] = data;
         return (E) array[index];
     }
