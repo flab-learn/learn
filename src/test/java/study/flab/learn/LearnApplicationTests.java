@@ -13,10 +13,11 @@ class LearnApplicationTests {
 		List list2 = new ArrayList();
 
 		Queue queue = new LinkedList();
-		Queue queue3 = new PriorityQueue();
+		Queue queue2 = new PriorityQueue();
 
-		Stack stack = new Stack();
-
+		List stack = new Vector();
+		List stack2 = new Stack();
+		Stack stack3 = new Stack();
 	}
 
 }
