@@ -1,86 +1,149 @@
 package study.flab.learn.cyh.DataStructure;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Stack;
 
 import static org.assertj.core.api.Assertions.*;
 
 
 class CustomStackUsingArrayListTest {
 
-    private CustomStackUsingArrayList csua;
+    private CustomStackUsingArrayList cStack;
+    private Stack rStack;
 
     private static final int PARAMS_ARRAY_SIZE = 10;
-    private CustomArrayListToCSUA arrayListToCSUA;
+    private CustomArrayListToCSUA cArrayList;
+    private ArrayList rArrayList;
 
     @BeforeEach
     void setUp() {
-        csua = new CustomStackUsingArrayList();
-        arrayListToCSUA = new CustomArrayListToCSUA();
-
-        for (int i = 1; i <= 9; i++) {
-            arrayListToCSUA.add(i + "번");
-        }
+        cStack = new CustomStackUsingArrayList();
+        rStack = new Stack();
+        cArrayList = new CustomArrayListToCSUA();
+        rArrayList = new ArrayList();
     }
 
     @Test
     void add() {
-        String sMsg = "1번, 2번, 3번, 4번, 5번, 6번, 7번, 8번, 9번";
-        assertThat(arrayListToCSUA.toString()).contains(sMsg);
+        cArrayList.add("1번");
+        cArrayList.add("2번");
+        cArrayList.add("3번");
+        String sMsg = "1번, 2번, 3번";
+        assertThat(cArrayList.toString()).contains(sMsg);
 
-        sMsg = "1번, 2번, 3번, 4번, 5번, 6번, 7번, 8번, 9번, 10번";
-        arrayListToCSUA.add("10번");
-        assertThat(arrayListToCSUA.toString()).contains(sMsg);
+        sMsg = "1번, 2번, 3번, 4번";
+        cArrayList.add("4번");
+        assertThat(cArrayList.toString()).contains(sMsg);
     }
 
     @Test
     void addWithIndex() {
-        String sMsg = "1번, 2번, 3번, 4번, 5번, 6번, 7번, 8번, 9번";
-        assertThat(arrayListToCSUA.toString()).contains(sMsg);
+        cArrayList.add("1번");
+        cArrayList.add("2번");
+        cArrayList.add("3번");
+        String sMsg = "1번, 2번, 3번";
+        assertThat(cArrayList.toString()).contains(sMsg);
 
-        arrayListToCSUA.add(8,"10번");
-        sMsg = "1번, 2번, 3번, 4번, 5번, 6번, 7번, 8번, 10번, 9번";
-        assertThat(arrayListToCSUA.toString()).contains(sMsg);
+        cArrayList.add(0,"10번");
+        sMsg = "10번, 1번, 2번, 3번";
+        assertThat(cArrayList.toString()).contains(sMsg);
 
-        arrayListToCSUA.add(0,"11번");
-        sMsg = "11번, 1번, 2번, 3번, 4번, 5번, 6번, 7번, 8번, 10번, 9번";
-        assertThat(arrayListToCSUA.toString()).contains(sMsg);
+        cArrayList.add(4,"11번");
+        sMsg = "10번, 1번, 2번, 3번, 11번";
+        assertThat(cArrayList.toString()).contains(sMsg);
     }
 
     @Test
     void indexOf() {
-        assertThat(arrayListToCSUA.indexOf(1)).isEqualTo(-1);
+        assertThat(cArrayList.indexOf(1)).isEqualTo(-1);
 
-        arrayListToCSUA = new CustomArrayListToCSUA();
-        arrayListToCSUA.add(null);
-        assertThat(arrayListToCSUA.indexOf(null)).isEqualTo(0);
+        cArrayList = new CustomArrayListToCSUA();
+        cArrayList.add(null);
+        assertThat(cArrayList.indexOf(null)).isEqualTo(0);
     }
 
     @Test
+    void remove() {
+        rArrayList.add("1번");
+        rArrayList.add("2번");
+        rArrayList.add("3번");
+        rArrayList.remove(0);
+        String sMsg = "2번, 3번";
+        assertThat(rArrayList.toString()).contains(sMsg);
+        assertThat(rArrayList.size()).isEqualTo(2);
+
+        cArrayList.add("1번");
+        cArrayList.add("2번");
+        cArrayList.add("3번");
+        sMsg = "2번, 3번";
+        cArrayList.remove(0);
+        assertThat(cArrayList.toString()).contains(sMsg);
+        assertThat(cArrayList.size()).isEqualTo(2);
+    }
+
+
+    //=============================================
+    @Test
     void isEmpty() {
-        csua.isEmpty();
-        assertThat(csua.isEmpty()).isTrue();
+        rStack.isEmpty();
+        assertThat(rStack.isEmpty()).isTrue();
+
+        cStack.isEmpty();
+        assertThat(cStack.isEmpty()).isTrue();
     }
 
     @Test
     void push() {
         String pMsg = "10번";
-        csua.push(pMsg);
-        assertThat(csua.isEmpty()).isFalse();
+        rStack.push(pMsg);
+        assertThat(rStack.isEmpty()).isFalse();
 
         String sMsg = "10번";
-        assertThat(csua.toString()).contains(sMsg);
+        assertThat(rStack.toString()).contains(sMsg);
+        assertThat(rStack.size()).isEqualTo(1);
+
+
+        pMsg = "10번";
+        cStack.push(pMsg);
+        assertThat(cStack.isEmpty()).isFalse();
+
+        sMsg = "10번";
+        assertThat(cStack.toString()).contains(sMsg);
+        assertThat(cStack.size()).isEqualTo(1);
     }
 
     @Test
     void pop() {
+        rStack.add("1번");
+        rStack.add("2번");
+        rStack.add("3번");
+        String sMsg = "3번";
+        assertThat(Objects.equals(rStack.pop(), sMsg)).isTrue();
+        assertThat(rStack.size()).isEqualTo(2);
+
+        cStack.arrayStack.add("1번");
+        cStack.arrayStack.add("2번");
+        cStack.arrayStack.add("3번");
+        assertThat(Objects.equals(cStack.pop(), sMsg)).isTrue();
+        assertThat(cStack.size()).isEqualTo(2);
+
     }
 
     @Test
     void peek() {
+        rStack.add("1번");
+        rStack.add("2번");
+        rStack.add("3번");
+        String sMsg = "3번";
+        assertThat(Objects.equals(rStack.peek(), sMsg)).isTrue();
+
+        cStack.arrayStack.add("1번");
+        cStack.arrayStack.add("2번");
+        cStack.arrayStack.add("3번");
+        assertThat(Objects.equals(cStack.peek(), sMsg)).isTrue();
     }
 }

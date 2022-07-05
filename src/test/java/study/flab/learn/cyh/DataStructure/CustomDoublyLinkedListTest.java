@@ -29,8 +29,9 @@ class CustomDoublyLinkedListTest {
 
     @Test
     void addLast() {
+        customLinkedList.addLast("1");
         customLinkedList.addLast("2");
-        assertThat(customLinkedList.toString()).isEqualTo("2");
+        assertThat(customLinkedList.toString()).isEqualTo("1,2");
     }
 
     @Test
