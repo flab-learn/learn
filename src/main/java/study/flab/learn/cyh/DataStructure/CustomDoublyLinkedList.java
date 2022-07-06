@@ -4,16 +4,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class CustomDoublyLinkedList<T> {
+public class CustomDoublyLinkedList<E> {
 
     private int size;
-    private CustomDoublyNode<T> head;
-    private CustomDoublyNode<T> tail;
+    private CustomDoublyNode<E> head;
+    private CustomDoublyNode<E> tail;
 
     public CustomDoublyLinkedList() {
         this.size = 0;
-
-        //Sentinel
         this.head = new CustomDoublyNode<>();
         this.tail = new CustomDoublyNode<>();
         this.head.nextNode = tail;
@@ -21,13 +19,13 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(1)
-    public boolean add(T data) {
+    public boolean add(E data) {
         addLast(data);
         return true;
     }
 
     //O(n)
-    public void add(int index, T data) {
+    public void add(int index, E data) {
         if (index == 0) {
             addFirst(data);
             return;
@@ -36,11 +34,9 @@ public class CustomDoublyLinkedList<T> {
             addLast(data);
             return;
         }
-        CustomDoublyNode<T> prevNode = access(index - 1);  // 추가하려는 위치의 이전 노드
-        CustomDoublyNode<T> currNode = prevNode.nextNode;  // 추가하려는 위치의 노드
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data); // 추가하려는 노드
-
-        //Sentinel
+        CustomDoublyNode<E> prevNode = access(index - 1);  // 추가하려는 위치의 이전 노드
+        CustomDoublyNode<E> currNode = prevNode.nextNode;  // 추가하려는 위치의 노드
+        CustomDoublyNode<E> newNode = new CustomDoublyNode<>(data); // 추가하려는 노드
         newNode.prevNode = prevNode;
         prevNode.nextNode = newNode;
         newNode.nextNode = currNode;
@@ -49,27 +45,26 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(1)
-    public boolean addAll(Collection<T> c) {
-        for (T t : c) {
-            addLast(t);
+    public boolean addAll(Collection<E> c) {
+        for (E e : c) {
+            addLast(e);
         }
         return true;
     }
 
     //O(n)
-    public boolean addAll(int index, Collection<T> c) {
-        for (T t : c) {
-            add(index - 1, t);
+    public boolean addAll(int index, Collection<E> c) {
+        for (E e : c) {
+            add(index - 1, e);
             index++;
         }
         return true;
     }
 
     //O(1)
-    public void addFirst(T data) {
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
-        //Sentinel
-        CustomDoublyNode<T> nextNode = head.nextNode;
+    public void addFirst(E data) {
+        CustomDoublyNode<E> newNode = new CustomDoublyNode<>(data);
+        CustomDoublyNode<E> nextNode = head.nextNode;
         nextNode.prevNode = newNode;
         head.nextNode = newNode;
         newNode.prevNode = head;
@@ -78,14 +73,13 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(1)
-    public void addLast(T data) {
+    public void addLast(E data) {
         if (size <= 0) {
             addFirst(data);
             return;
         }
-        CustomDoublyNode<T> newNode = new CustomDoublyNode<>(data);
-        //Sentinel
-        CustomDoublyNode<T> prevNode = tail.prevNode;
+        CustomDoublyNode<E> newNode = new CustomDoublyNode<>(data);
+        CustomDoublyNode<E> prevNode = tail.prevNode;
         prevNode.nextNode = newNode;
         newNode.nextNode = tail;
         tail.prevNode = newNode;
@@ -94,16 +88,14 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(n)
-    private CustomDoublyNode<T> access(int index) {
+    private CustomDoublyNode<E> access(int index) {
         //범위 밖인 경우 처리
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-
-        CustomDoublyNode<T> currNode;
+        CustomDoublyNode<E> currNode;
         // 뒤에서부터 접근하는 경우
         if (index > size/2) {
-            //Sentinel
             currNode = tail.prevNode;
             for (int i = size - 1; i > index; i--) {
                 currNode = currNode.prevNode;
@@ -111,7 +103,6 @@ public class CustomDoublyLinkedList<T> {
             return currNode;
         }
 
-        //Sentinel
         currNode = head.nextNode;
         for (int i = 0; i < index; i++) {
             currNode = currNode.nextNode;
@@ -122,14 +113,12 @@ public class CustomDoublyLinkedList<T> {
     //O(n)
     public String toString() {
         StringBuilder sum = new StringBuilder();
-        //Sentinel
-        CustomDoublyNode<T> currNode = head.nextNode;
+        CustomDoublyNode<E> currNode = head.nextNode;
         for (int i = 0; i < size; i++) {
             sum.append(currNode.data);
             if (i < size - 1) {
                 sum.append(",");
             }
-            //Sentinel
             if (currNode.nextNode == tail) {
                 continue;
             }
@@ -141,19 +130,19 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(1)
-    public boolean offer(T t) {
-        return add(t);
+    public boolean offer(E e) {
+        return add(e);
     }
 
     //O(1)
-    public boolean offerFirst(T t) {
-        addFirst(t);
+    public boolean offerFirst(E e) {
+        addFirst(e);
         return true;
     }
 
     //O(1)
-    public boolean offerLast(T t) {
-        addLast(t);
+    public boolean offerLast(E e) {
+        addLast(e);
         return true;
     }
 
@@ -163,9 +152,9 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(nm)
-    public boolean containsAll(Collection<T> c) {
-        for (T t : c) {
-            if (!contains(t)) {
+    public boolean containsAll(Collection<E> c) {
+        for (E e : c) {
+            if (!contains(e)) {
                 return false;
             }
         }
@@ -176,13 +165,13 @@ public class CustomDoublyLinkedList<T> {
     public int indexOf(Object o) {
         int index = 0;
         if (Objects.isNull(o)) {
-            for (CustomDoublyNode<T> node = head.nextNode; node != null; node = node.nextNode) {
+            for (CustomDoublyNode<E> node = head.nextNode; node != null; node = node.nextNode) {
                 if (Objects.isNull(node.data))
                     return index;
                 index++;
             }
         } else {
-            for (CustomDoublyNode<T> node = head.nextNode; node != null; node = node.nextNode) {
+            for (CustomDoublyNode<E> node = head.nextNode; node != null; node = node.nextNode) {
                 if (o.equals(node.data))
                     return index;
                 index++;
@@ -194,72 +183,69 @@ public class CustomDoublyLinkedList<T> {
     //O(1)
     public boolean isEmpty() {
 //        return size == 0;
-        //Sentinel
         return head.nextNode == tail && tail.prevNode == head;
     }
 
     //O(n)
-    public T get(int index) {
-        CustomDoublyNode<T> node = access(index);
+    public E get(int index) {
+        CustomDoublyNode<E> node = access(index);
         return node.data;
     }
 
     //O(1)
-    public T getFirst() {
+    public E getFirst() {
 //        return get(0);
-        //Sentinel
         return (head.nextNode == null) ? null : head.nextNode.data;
     }
 
     //O(1)
-    public T getLast() {
+    public E getLast() {
 //        return get(size - 1);
-        //Sentinel
         return (tail.prevNode == null) ? null : tail.prevNode.data;
     }
 
     //O(1)
-    public T peek() {
+    public E peek() {
 //        return (head.nextNode == null) ? null : getFirst();
         return getFirst();
     }
 
     //O(1)
-    public T peekFirst() {
+    public E peekFirst() {
         return peek();
     }
 
     //O(1)
-    public T peekLast() {
+    public E peekLast() {
 //        return (tail.prevNode == null) ? null : tail.prevNode.data;
         return getLast();
     }
 
     //O(n)
-    public T poll() {
+    public E poll() {
         return (head.nextNode == null) ? null : remove(0);
     }
 
     //O(1)
-    public T pollFirst() {
+    public E pollFirst() {
         return poll();
     }
 
     //O(1)
-    public T pollLast() {
+    public E pollLast() {
         return (tail.prevNode == null) ? null : remove(size - 1);
     }
 
     //O(1)
-    public T pop() {
-        CustomDoublyNode<T> currNode = head.nextNode;
+    public E pop() {
+        CustomDoublyNode<E> currNode = head.nextNode;
         removeFirst();
         return currNode.data;
     }
 
     //O(1)
-    public void push(T t) {
-        addFirst(t);
+    public void push(E e) {
+        addFirst(e);
     }
 
     /**
@@ -269,29 +255,27 @@ public class CustomDoublyLinkedList<T> {
      * index로 접근하는 형태는 linked list에서 비효율적이거든요
      */
     //O(n)
-    public T remove(int index) {
+    public E remove(int index) {
         if (index <= 0) {
             String strRtn = (head.nextNode == null ? null : String.valueOf(head.nextNode.data));
             removeFirst();
-            return (T) strRtn;
+            return (E) strRtn;
         }
         if (index == size) {
             String strRtn = (tail.prevNode == null ? null : String.valueOf(tail.prevNode.data));
             removeLast();
-            return (T) strRtn;
+            return (E) strRtn;
         }
 
-        //doubly
-        CustomDoublyNode<T> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
+        CustomDoublyNode<E> prevNode = access(index - 1);  // 삭제하려는 위치의 이전 노드
 //        CustomDoublyNode<T> currNode = prevNode.next;   // 삭제하려는 위치의 노드(현재노드)
         String strRtn = String.valueOf(prevNode.nextNode.data); // 삭제하려는 위치의 노드의 data(현재노드의 data)
 
         // 삭제할 노드(현재노드)의 전후 노드를 연결
         prevNode.nextNode = prevNode.nextNode.nextNode; // 이전 노드의 다음 노드를, 현재 노드에서 다음 노드로 변경
-        //Sentinel
-        prevNode.nextNode.prevNode = prevNode;  //prevNode.next.prev == currNode.prev
+        prevNode.nextNode.prevNode = prevNode;
         size--;
-        return (T) strRtn;
+        return (E) strRtn;
     }
 
     //O(n)
@@ -308,15 +292,13 @@ public class CustomDoublyLinkedList<T> {
         if (isEmpty()) {
             return false;
         }
-        //Sentinel
         if (size == 1) {
             head.nextNode = tail;
             tail.prevNode = head;
             size--;
             return true;
         }
-        //Sentinel
-        CustomDoublyNode<T> nextNode = head.nextNode.nextNode;
+        CustomDoublyNode<E> nextNode = head.nextNode.nextNode;
         nextNode.nextNode = head.nextNode.nextNode.nextNode;
         nextNode.prevNode = head;
         head.nextNode = nextNode;
@@ -329,15 +311,13 @@ public class CustomDoublyLinkedList<T> {
         if (isEmpty()) {
             return false;
         }
-        //Sentinel
         if (size == 1) {
             head.nextNode = tail;
             tail.prevNode = head;
             size--;
             return true;
         }
-        //Sentinel
-        CustomDoublyNode<T> prevNode = tail.prevNode.prevNode;
+        CustomDoublyNode<E> prevNode = tail.prevNode.prevNode;
         prevNode.prevNode = tail.prevNode.prevNode.prevNode;
         prevNode.nextNode = tail;
         tail.prevNode = prevNode;
@@ -346,9 +326,9 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(n)
-    public boolean removeAll(Collection<T> c) {
-        for (T t : c) {
-            if (!remove(t)) {
+    public boolean removeAll(Collection<E> c) {
+        for (E e : c) {
+            if (!remove(e)) {
                 return false;
             }
         }
@@ -356,17 +336,17 @@ public class CustomDoublyLinkedList<T> {
     }
 
     //O(n)
-    public T set(int index, T t) {
-        CustomDoublyNode<T> currNode = access(index);
-        CustomDoublyNode<T> currNodeTemp = currNode;
-        currNode.data = t;
+    public E set(int index, E e) {
+        CustomDoublyNode<E> currNode = access(index);
+        CustomDoublyNode<E> currNodeTemp = currNode;
+        currNode.data = e;
         return currNodeTemp.data;
     }
 
     // 이건 없습니다만 ArrayList랑 비슷하게 구현해본다면?
     //O(nm)
-    public LinkedList<T> subList(int from, int to) {
-        LinkedList<T> rtnList = new LinkedList<>();
+    public LinkedList<E> subList(int from, int to) {
+        LinkedList<E> rtnList = new LinkedList<>();
         for (int i = from, j = 0; i < to; i++, j++) {
             rtnList.add(j, access(i).data);
         }
@@ -390,7 +370,6 @@ class CustomDoublyNode<T> {
         this.prevNode = null;
     }
 
-    //Sentinel
     public CustomDoublyNode() {
         this.data = null;
         this.nextNode = null;
