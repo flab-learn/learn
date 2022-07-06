@@ -98,7 +98,8 @@ class CustomArrayListToCSUA<E> {
     }
 
     //O(n)
-    private E[] incDoublyCapacity(int capacity) {
+    private E[] incDoublyCapacity() {
+        int capacity = this.elements.length;
         Object[] elementsTemp = new Object[capacity * 2];
         for (int i = 0; i < lastIndex; i++) {
             elementsTemp[i] = elements[i];
@@ -109,7 +110,7 @@ class CustomArrayListToCSUA<E> {
     //amortised O(1)
     protected boolean add(E element) {
         if (this.elements.length <= lastIndex) {
-            this.elements = incDoublyCapacity(this.elements.length);
+            this.elements = incDoublyCapacity();
         }
         this.elements[lastIndex++] = element;
         return true;
@@ -123,7 +124,7 @@ class CustomArrayListToCSUA<E> {
         }
 
         if (this.elements.length <= lastIndex) {
-            this.elements = incDoublyCapacity(this.elements.length);
+            this.elements = incDoublyCapacity();
         }
 
         for (int i = lastIndex; i > index; i--) {
