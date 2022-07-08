@@ -17,6 +17,7 @@ public class CustomLinkedQueue<E> {
         return size <= 0;
     }
 
+    // O(1)
     void enqueue(E e) {
         Node<E> prev = rear.prev;
         Node<E> node = new Node<>(e, rear, prev);
@@ -26,6 +27,7 @@ public class CustomLinkedQueue<E> {
         size++;
     }
 
+    // O(1)
     E dequeue() {
         if(isEmpty()) {
             return null;
@@ -42,6 +44,7 @@ public class CustomLinkedQueue<E> {
         return data;
     }
 
+    // O(1)
     E peek() {
         if(isEmpty()) {
             return null;
