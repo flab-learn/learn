@@ -19,6 +19,7 @@ public class CustomLinkedStack<E> {
         return head.next == tail;
     }
 
+    // O(1)
     void push(E e) {
         Node<E> prev = tail.prev;
         Node<E> node = new Node<>(e, tail, prev);
@@ -28,6 +29,7 @@ public class CustomLinkedStack<E> {
         size++;
     }
 
+    // O(1)
     E pop() {
         if(isEmpty()) {
             throw new EmptyStackException();
@@ -44,6 +46,7 @@ public class CustomLinkedStack<E> {
         return data;
     }
 
+    // O(`)
     E peek() {
         if(isEmpty()) {
             throw new EmptyStackException();

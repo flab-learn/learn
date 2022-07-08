@@ -31,6 +31,7 @@ public class CustomArrayStack<E> {
         return size <= 0;
     }
 
+    // O(1) / worst: O(n)
     void push(E e) {
         if(capacity <= size) {
             reAllocCapacity();
@@ -39,6 +40,7 @@ public class CustomArrayStack<E> {
         size++;
     }
 
+    // O(1)
     E pop() {
         if(isEmpty()) {
             throw new EmptyStackException();
@@ -51,6 +53,7 @@ public class CustomArrayStack<E> {
         return (E) data;
     }
 
+    // O(1)
     E peek() {
         if(isEmpty()) {
             throw new EmptyStackException();
