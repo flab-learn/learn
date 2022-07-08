@@ -36,6 +36,7 @@ public class CustomArrayStack<E> {
         if(capacity <= size) {
             reAllocCapacity();
         }
+
         array[++top] = e;
         size++;
     }
