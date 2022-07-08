@@ -9,6 +9,14 @@ public class CustomLinkedList<E> {
     Node<E> tail;
     int size;
 
+    public CustomLinkedList() {
+        head = new Node<>();
+        tail = new Node<>();
+
+        head.next = tail;
+        tail.prev = head;
+    }
+
     // O(1)
     boolean add(E e) {
         addLast(e);
@@ -21,17 +29,11 @@ public class CustomLinkedList<E> {
             return;
         }
 
-        if(index == 0) {
-            addFirst(e);
-        } else if(index == size) {
-            addLast(e);
-        } else {
-            Node<E> fNode = findNode(index);
-            Node<E> node = new Node<>(e, fNode.next, fNode);
-            fNode.next = node;
+        Node<E> fNode = findNode(index);
+        Node<E> node = new Node<>(e, fNode.next, fNode);
+        fNode.next = node;
 
-            size++;
-        }
+        size++;
     }
 
     // O(n)
@@ -63,28 +65,23 @@ public class CustomLinkedList<E> {
 
     // O(1)
     void addFirst(E e) {
-        Node<E> node = new Node<>(e, head, null);
+        Node<E> next = head.next;
+        Node<E> node = new Node<>(e, next, head);
 
-        if(head != null) {
-            head.prev = node;
-        } else {
-            tail = node;
-        }
+        next.prev = node;
+        head.next = node;
 
-        head = node;
         size++;
     }
 
     // O(1)
     void addLast(E e) {
-        if(size <= 0) {
-            addFirst(e);
-            return;
-        }
+        Node<E> prev = tail.prev;
+        Node<E> node = new Node<>(e, tail, prev);
 
-        Node<E> node = new Node<E>(e, null, tail);
+        prev.next = node;
         tail.prev = node;
-        tail = node;
+
         size++;
     }
 
@@ -109,7 +106,7 @@ public class CustomLinkedList<E> {
     // O(n)
     boolean contains(Object o) {
         int index = findIndex(o);
-        if(index == size)
+        if(index == -1)
             return false;
         return true;
     }
@@ -127,13 +124,13 @@ public class CustomLinkedList<E> {
     // O(n)
     int indexOf(Object o) {
         int index = findIndex(o);
-        if(index == size)
+        if(index == -1)
             return -1;
         return index;
     }
 
     boolean isEmpty() {
-        return size <= 0;
+        return head.next == tail;
     }
 
     // O(n)
@@ -236,30 +233,43 @@ public class CustomLinkedList<E> {
 
     // O(n)
     E remove(int index) {
-        Node<E> fNode = findNode(index);
-        if(fNode != null) {
-            Node<E> fPrev = fNode.prev;
-            Node<E> fNext = fNode.next;
-
-            fPrev.next = fNext;
-            fNext.prev = fPrev;
-
-            E data = fNode.data;
-            fNode = null;
-            size--;
-            return data;
+        if(index <= 0 || index >= size) {
+            return null;
         }
-        throw new NoSuchElementException();
+
+        Node<E> fNode = findNode(index);
+        E data = fNode.data;
+        unlinkedNode(fNode);
+
+        if(data != null) {
+            return data;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     // O(n)
     boolean remove(Object o) {
-        int index = indexOf(o);
-        E e = remove(index);
-        if(e != null) {
-            return true;
+        Node<E> node = head.next;
+        while(node != tail) {
+            if(node.equals(o)) {
+                unlinkedNode(node);
+                return true;
+            }
+            node = node.next;
         }
         return false;
+    }
+
+    void unlinkedNode(Node<E> node) {
+        Node<E> fPrev = node.prev;
+        Node<E> fNext = node.next;
+
+        fPrev.next = fNext;
+        fNext.prev = fPrev;
+
+        node = null;
+        size--;
     }
 
     // O(1)
@@ -312,9 +322,9 @@ public class CustomLinkedList<E> {
 
     // 추가 구현 - 노드 찾기
     Node<E> findNode(int index) {
-        Node<E> node = head;
+        Node<E> node = head.next;
         int checkIndex = 0;
-        while(node != null) {
+        while(node != tail) {
             if(index == checkIndex) {
                 return node;
             }
@@ -324,22 +334,10 @@ public class CustomLinkedList<E> {
         return null;
     }
 
-    // 추가 구현 - sentinel
-    void linkedSentinel(Object data) {
-        tail.next = new Node<>((E) data, null, tail.next);
-    }
-
-    void unlinkedSentinel() {
-        tail.next = null;
-    }
-
     int findIndex(Object o) {
-        // sentinel
-        linkedSentinel(o);
-
-        Node<E> node = head;
+        Node<E> node = head.next;
         int checkIndex = 0;
-        while(true) {
+        while(node != tail) {
             if(node.data.equals(o)) {
                 break;
             }
@@ -347,21 +345,10 @@ public class CustomLinkedList<E> {
             checkIndex++;
         }
 
-        unlinkedSentinel();
+        if(checkIndex == size) {
+            return -1;
+        }
 
         return checkIndex;
     }
-}
-
-class Node<E> {
-
-    public Node(E data, Node<E> next, Node<E> prev) {
-        this.data = data;
-        this.next = next;
-        this.prev = prev;
-    }
-
-    public E data;
-    public Node<E> next;
-    public Node<E> prev;
 }
