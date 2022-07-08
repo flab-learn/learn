@@ -46,7 +46,7 @@ public class CustomLinkedStack<E> {
         return data;
     }
 
-    // O(`)
+    // O(1)
     E peek() {
         if(isEmpty()) {
             throw new EmptyStackException();
