@@ -1,4 +1,4 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection.queue;
 
 public class CustomArrayQueue<E> {
     static final int DEFAULT_CAPACITY = 10;

@@ -1,4 +1,4 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection.stack;
 
 import java.util.EmptyStackException;
 

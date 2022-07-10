@@ -1,4 +1,6 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection.queue;
+
+import study.flab.learn.haen.datastructure.collection.Node;
 
 public class CustomLinkedQueue<E> {
     Node<E> front;
