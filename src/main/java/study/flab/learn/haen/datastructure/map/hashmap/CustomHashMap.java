@@ -5,25 +5,28 @@ import study.flab.learn.haen.datastructure.map.Node;
 import java.util.*;
 
 public class CustomHashMap<K, V> {
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 16;
+    private static final float DEFAULT_LOADFACTOR = 0.75f;
     LinkedList<Node>[] bucket;
+    float loadFactor;
     int capacity;
     int bucketSize;
     int entrySize;
 
     public CustomHashMap() {
+        this.loadFactor = DEFAULT_LOADFACTOR;
         this.capacity = DEFAULT_CAPACITY;
         bucket = new LinkedList[capacity];
         bucketSize = 0;
         entrySize = 0;
     }
 
-    public CustomHashMap(int capacity) {
-        if(capacity < 1) {
-            capacity = DEFAULT_CAPACITY;
+    public CustomHashMap(float loadFactor) {
+        if(loadFactor <= 0) {
+            loadFactor = DEFAULT_LOADFACTOR;
         }
-
-        this.capacity = capacity;
+        this.loadFactor = loadFactor;
+        this.capacity = DEFAULT_CAPACITY;
         bucket = new LinkedList[capacity];
         bucketSize = 0;
         entrySize = 0;
@@ -43,7 +46,7 @@ public class CustomHashMap<K, V> {
     }
 
     void put(K key, V value) {
-        if(capacity <= bucketSize) {
+        if(loadFactor * capacity <= entrySize) {
             reAllocCapacity();
         }
 
