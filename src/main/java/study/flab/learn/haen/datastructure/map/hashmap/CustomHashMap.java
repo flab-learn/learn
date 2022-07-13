@@ -32,6 +32,7 @@ public class CustomHashMap<K, V> {
         entrySize = 0;
     }
 
+    // Best: O(1), Worst: O(N)
     V get(K key) {
         int hashKey = hashFunction(key);
         if(bucket[hashKey] == null) {
@@ -45,6 +46,7 @@ public class CustomHashMap<K, V> {
         return null;
     }
 
+    // Best: O(1), Worst: O(N), 배열 재할당시: O(N^2)
     void put(K key, V value) {
         if(loadFactor * capacity <= entrySize) {
             reAllocCapacity();
@@ -67,6 +69,7 @@ public class CustomHashMap<K, V> {
         }
     }
 
+    // Best: O(1), Worst: O(N)
     V remove(K key) {
         int hashKey = hashFunction(key);
         if(bucket[hashKey] == null) {
