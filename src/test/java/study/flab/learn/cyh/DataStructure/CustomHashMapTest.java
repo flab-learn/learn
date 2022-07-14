@@ -152,7 +152,7 @@ class CustomHashMapTest {
     }
 
     @Test
-    void when_HashTable에_넣지않은_값을_get함수를_통해_확인_Expect_기대결과() {
+    void when_HashTable에_넣지않은_값을_get함수를_통해_확인_Expect_리턴값으로_null_확인() {
         //given
         int key1 = 1, key2 = 2;
         String value1 = "1번";
@@ -165,6 +165,25 @@ class CustomHashMapTest {
         assertThat(cMap.get(key2)).isEqualTo(null);
         assertThat(jMap.get(key2)).isEqualTo(null);
     }
+
+    @Test
+    void when_테스트상태_Expect_기대결과() {
+        //given
+        int count = 16;
+
+        //when
+        for (int i = 1; i <= count; i++) {
+            cMap.put(i, i+"번");
+        }
+        for (int i = 1; i <= count; i++) {
+            jMap.put(i, i+"번");
+        }
+
+        //then
+        System.out.println(cMap.entrySet());
+        System.out.println(jMap.entrySet());
+    }
+
 
 //    @Test
 //    void when_테스트상태_Expect_기대결과() {

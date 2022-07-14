@@ -1,15 +1,14 @@
 package study.flab.learn.cyh.DataStructure;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 public class CustomHashMap<K, V> implements Serializable {
 
     private static final int INITIAL_CAPACITY = 1 << 4; // 16
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     public int capacity;
-    public float loadFactor; //해시테이블의 버킷이 얼마나 가득 찼는지 보여주는 수치
+    public float loadFactor;
     public CustomEntryToCHM<K, V>[] table;
     public int tableSize;
 
@@ -38,10 +37,15 @@ public class CustomHashMap<K, V> implements Serializable {
 
     //O(n)
     private CustomEntryToCHM[] incCapacitySize() {
-        this.capacity = this.capacity * 2;
+        int prevCapacity = this.capacity;
+        this.capacity *= 2;
         CustomEntryToCHM[] newTable = new CustomEntryToCHM[this.capacity];
-        for (int i = 0; i < tableSize; i++) {
-            newTable[i] = this.table[i];
+        for (int i = 0; i < this.tableSize; i++) {
+            for (int j = 0; j < prevCapacity; j++) {
+                if (this.table[j] != null) {
+                    newTable[j] = this.table[j];
+                }
+            }
         }
         return newTable;
     }
@@ -73,12 +77,27 @@ public class CustomHashMap<K, V> implements Serializable {
         return tableSize == 0;
     }
 
+    public Set<Map.Entry<K, V>> entrySet() {
+        Set<Map.Entry<K, V>> set = new HashSet<>();
+        for (int i = 0; i < this.tableSize; i++) {
+            for (int j = 0; j < this.capacity; j++) {
+                if (this.table[j] != null) {
+                    set.add(this.table[j]);
+                }
+            }
+        }
+        return set;
+    }
+
+
+
     @Override
     public String toString() {
         return "CustomHashMap{"
                 + Arrays.toString(table) +
                 '}';
     }
+
 }
 
 class CustomEntryToCHM<K, V> implements Map.Entry<K, V> {
