@@ -9,8 +9,7 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
     private static final float DEFAULT_LOAD_FACTOR = 0.75f;
     public int capacity;
     public float loadFactor;
-//    public LinkedList<CustomEntryToCHMUL<K, V>>[] table;
-    public CustomEntryToCHMUL<K, V>[] table;
+    public LinkedList<CustomEntryToCHMUL<K, V>>[] table;
     public int tableSize;
 
     public CustomHashMapUsingLinkedList() {
@@ -19,20 +18,56 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
     public CustomHashMapUsingLinkedList(int capacity) {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
         this.capacity = capacity;
-        this.table = new CustomEntryToCHMUL[this.capacity];
+        this.table = new LinkedList[this.capacity];
     }
     public CustomHashMapUsingLinkedList(float loadFactor) {
         if (loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
         this.loadFactor = loadFactor;
         this.capacity = INITIAL_CAPACITY;
-        this.table = new CustomEntryToCHMUL[this.capacity];
+        this.table = new LinkedList[this.capacity];
+    }
+
+
+    private CustomEntryToCHMUL<K,V> getEntry(LinkedList<CustomEntryToCHMUL<K,V>> list) {
+        if (list == null) {
+            System.out.println("### entry == null");
+            return null;
+        }
+        System.out.println("### entry.toString()=" + list.toString());
+
+        CustomEntryToCHMUL<K,V> entryTemp = null;
+        for (CustomEntryToCHMUL e : list) {
+            System.out.println("### CustomEntryToCHMUL e : entry");
+            if (e.nextEntry != null) {
+                System.out.println("### e.nextEntry != null");
+                entryTemp = e.nextEntry;
+            }
+        }
+
+//        K key = entry.getLast().key;
+//        V value = entry.getLast().value;
+//        System.out.println("### key=" + key);
+//        System.out.println("### value=" + value);
+//        CustomEntryToCHMUL<K,V> currEntry = new CustomEntryToCHMUL<>(key, value, null);
+//        System.out.println("### currEntry=" + currEntry.nextEntry);
+//        return currEntr
+
+        if (entryTemp != null) {
+            K key = entryTemp.getKey();
+            V value = entryTemp.getValue();
+            System.out.println("### key=" + key);
+            System.out.println("### value=" + value);
+//            CustomEntryToCHMUL<K,V> currEntry = new CustomEntryToCHMUL<>(key, value, null);
+//            System.out.println("### currEntry=" + currEntry.nextEntry);
+        }
+        return entryTemp == null ? list.getFirst() : entryTemp;
     }
 
     //O(1)
     public V get(K key) {
         int tableIndex = key.hashCode() % this.capacity;
-        CustomEntryToCHMUL<K,V> currEntry = this.table[tableIndex];
+        CustomEntryToCHMUL<K,V> currEntry = getEntry(this.table[tableIndex]);
 
 //        while (currEntry != null) {
 //            if (currEntry.key.equals(key)) {
@@ -48,8 +83,10 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
             System.out.println("### currEntry.toString()=" + currEntry.toString());
         }
         System.out.println("======= get start ================");
-        for (int i = 0; i < 10; i++) {
-            System.out.println("i=" + this.table[i]);
+        for (int i = 0; i < capacity; i++) {
+            if (this.table != null) {
+                System.out.println("i=" + this.table[i]);
+            }
         }
         System.out.println("======= get end ================");
 
@@ -62,8 +99,11 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
             currEntry = currEntry.nextEntry;
         }
         System.out.println("======= get 2 start ================");
-        for (int i = 0; i < 10; i++) {
-            System.out.println("i=" + this.table[i]);
+
+        for (int i = 0; i < capacity; i++) {
+            if (this.table != null) {
+                System.out.println("i=" + this.table[i]);
+            }
         }
         System.out.println("======= get 2 end ================");
         return null;
@@ -94,8 +134,11 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         int tableIndex = key.hashCode() % this.capacity;
         System.out.println("### tableIndex=" + tableIndex);
 
-        CustomEntryToCHMUL<K, V> currEntry = this.table[tableIndex];
+        CustomEntryToCHMUL<K, V> currEntry = getEntry(this.table[tableIndex]);
 
+        if (currEntry != null) {
+            System.out.println("### currEntry.toString()=" + currEntry.toString());
+        }
 
 //        if (this.table[tableIndex] == null) {
 //            System.out.println("### this.table[tableIndex]");
@@ -106,7 +149,9 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
 
         if (currEntry == null) {
             System.out.println("### newEntry == null");
-            this.table[tableIndex] = newEntry;
+//            this.table[tableIndex] = newEntry;
+            this.table[tableIndex] = new LinkedList<>();
+            this.table[tableIndex].add(newEntry);
             tableSize++;
         } else {
             System.out.println("### newEntry != null");
@@ -130,8 +175,10 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
             }
         }
         System.out.println("======= put 2 start ================");
-        for (int i = 0; i < 10; i++) {
-            System.out.println("i=" + this.table[i]);
+        for (int i = 0; i < capacity; i++) {
+            if (this.table != null) {
+                System.out.println("i=" + this.table[i]);
+            }
         }
         System.out.println("======= put 2 end ================");
     }
@@ -153,7 +200,8 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         Set<Map.Entry<K, V>> set = new HashSet<>();
         for (int i = 0; i < this.capacity; i++) {
             if (this.table[i] != null) {
-                set.add(this.table[i]);
+//                set.add(this.table[i]);
+                set.add(getEntry(this.table[i]));
             }
         }
         return set;
@@ -161,9 +209,18 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
 
     @Override
     public String toString() {
-        return "CustomHashMapUsingLinkedList{"
-                + Arrays.toString(table) +
-                '}';
+        String sRtn = "CustomHashMapUsingLinkedList{";
+        for (int i = 0; i < this.table.length; i++) {
+            sRtn += getEntry(this.table[i]);
+            if (i != this.table.length - 1) {
+                sRtn += " ";
+            }
+        }
+        sRtn += '}';
+        return sRtn;
+//        return "CustomHashMapUsingLinkedList{"
+//                + Arrays.toString(table) +
+//                '}';
     }
 
 }
