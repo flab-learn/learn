@@ -180,8 +180,8 @@ class CustomHashMapTest {
         }
 
         //then
-        System.out.println(cMap.entrySet());
-        System.out.println(jMap.entrySet());
+        assertThat(cMap.entrySet().size()).isEqualTo(count);
+        assertThat(jMap.entrySet().size()).isEqualTo(count);
     }
 
 

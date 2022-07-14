@@ -40,11 +40,9 @@ public class CustomHashMap<K, V> implements Serializable {
         int prevCapacity = this.capacity;
         this.capacity *= 2;
         CustomEntryToCHM[] newTable = new CustomEntryToCHM[this.capacity];
-        for (int i = 0; i < this.tableSize; i++) {
-            for (int j = 0; j < prevCapacity; j++) {
-                if (this.table[j] != null) {
-                    newTable[j] = this.table[j];
-                }
+        for (int i = 0; i < prevCapacity; i++) {
+            if (this.table[i] != null) {
+                newTable[i] = this.table[i];
             }
         }
         return newTable;
@@ -65,8 +63,7 @@ public class CustomHashMap<K, V> implements Serializable {
 
     //O(1)
     public int getEmptyEntry() {
-        int iRtn = this.capacity - this.tableSize;
-        return iRtn;
+        return this.capacity - this.tableSize;
     }
     //O(1)
     public int size() {
@@ -76,20 +73,16 @@ public class CustomHashMap<K, V> implements Serializable {
     public boolean isEmpty() {
         return tableSize == 0;
     }
-
+    //O(n)
     public Set<Map.Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> set = new HashSet<>();
-        for (int i = 0; i < this.tableSize; i++) {
-            for (int j = 0; j < this.capacity; j++) {
-                if (this.table[j] != null) {
-                    set.add(this.table[j]);
-                }
+        for (int i = 0; i < this.capacity; i++) {
+            if (this.table[i] != null) {
+                set.add(this.table[i]);
             }
         }
         return set;
     }
-
-
 
     @Override
     public String toString() {
