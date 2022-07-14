@@ -124,16 +124,7 @@ class CustomHashMapUsingLinkedListTest {
         for (int i = 1; i <= count; i++) {
             cMap.put(i, i+"번");
         }
-        System.out.println("16 cMap.toString()=" + cMap.toString());
         cMap.put(key, value);
-        System.out.println("17 cMap.put(key, value)");
-//        System.out.println("17 cMap.toString()=" + cMap.toString());
-        System.out.println("17 cMap.get(key)=" + cMap.get(key));
-        System.out.println("17 2 cMap.toString()=" + cMap.toString());
-//        for (int i = 0; i < cMap.size(); i++) {
-//        for (int i = 1; i <= count; i++) {
-//            System.out.println("17 3 cMap.toString()=" + cMap.get(i).toString());
-//        }
 
         //then
         assertThat(cMap.get(key)).isEqualTo(value);

@@ -28,135 +28,52 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         this.table = new LinkedList[this.capacity];
     }
 
-
+    //O(n)
     private CustomEntryToCHMUL<K,V> getEntry(LinkedList<CustomEntryToCHMUL<K,V>> list) {
         if (list == null) {
-            System.out.println("### entry == null");
             return null;
         }
-        System.out.println("### entry.toString()=" + list.toString());
 
         CustomEntryToCHMUL<K,V> entryTemp = null;
         for (CustomEntryToCHMUL e : list) {
-            System.out.println("### CustomEntryToCHMUL e : entry");
             if (e.nextEntry != null) {
-                System.out.println("### e.nextEntry != null");
                 entryTemp = e.nextEntry;
             }
         }
 
-//        K key = entry.getLast().key;
-//        V value = entry.getLast().value;
-//        System.out.println("### key=" + key);
-//        System.out.println("### value=" + value);
-//        CustomEntryToCHMUL<K,V> currEntry = new CustomEntryToCHMUL<>(key, value, null);
-//        System.out.println("### currEntry=" + currEntry.nextEntry);
-//        return currEntr
-
         if (entryTemp != null) {
             K key = entryTemp.getKey();
             V value = entryTemp.getValue();
-            System.out.println("### key=" + key);
-            System.out.println("### value=" + value);
-//            CustomEntryToCHMUL<K,V> currEntry = new CustomEntryToCHMUL<>(key, value, null);
-//            System.out.println("### currEntry=" + currEntry.nextEntry);
         }
         return entryTemp == null ? list.getFirst() : entryTemp;
     }
 
-    //O(1)
+    //O(1)~O(n)
     public V get(K key) {
         int tableIndex = key.hashCode() % this.capacity;
         CustomEntryToCHMUL<K,V> currEntry = getEntry(this.table[tableIndex]);
-
-//        while (currEntry != null) {
-//            if (currEntry.key.equals(key)) {
-//                return currEntry == null ? null : currEntry.value;
-//            }
-//            currEntry = currEntry.nextEntry;
-//        }
-//        return null;
-
-
-        System.out.println("### tableIndex=" + tableIndex);
-        if (currEntry != null) {
-            System.out.println("### currEntry.toString()=" + currEntry.toString());
-        }
-        System.out.println("======= get start ================");
-        for (int i = 0; i < capacity; i++) {
-            if (this.table != null) {
-                System.out.println("i=" + this.table[i]);
-            }
-        }
-        System.out.println("======= get end ================");
-
         while (currEntry != null) {
-            System.out.println("### get currEntry != null");
             if (currEntry.key.equals(key)) {
-                System.out.println("### get currEntry.key.equals(key)");
                 return currEntry.value;
             }
             currEntry = currEntry.nextEntry;
         }
-        System.out.println("======= get 2 start ================");
-
-        for (int i = 0; i < capacity; i++) {
-            if (this.table != null) {
-                System.out.println("i=" + this.table[i]);
-            }
-        }
-        System.out.println("======= get 2 end ================");
         return null;
-
     }
 
-//    //O(n)
-//    private CustomEntryToCHMUL<K, V>[] incCapacitySize() {
-//        int prevCapacity = this.capacity;
-//        this.capacity *= 2;
-//        CustomEntryToCHMUL<K, V>[] newTable = new CustomEntryToCHMUL[this.capacity];
-//        for (int i = 0; i < prevCapacity; i++) {
-//            if (this.table[i] != null) {
-//                newTable[i] = this.table[i];
-//            }
-//        }
-//        return newTable;
-//    }
-
-    //amortised O(1)
+    //O(1)~O(n)
     public void put(K key, V value) {
-//        if (loadFactor * this.capacity <= this.tableSize) {
-//            this.table = incCapacitySize();
-//        }
-
         CustomEntryToCHMUL<K, V> newEntry = new CustomEntryToCHMUL<>(key, value, null);
 
         int tableIndex = key.hashCode() % this.capacity;
-        System.out.println("### tableIndex=" + tableIndex);
-
         CustomEntryToCHMUL<K, V> currEntry = getEntry(this.table[tableIndex]);
 
-        if (currEntry != null) {
-            System.out.println("### currEntry.toString()=" + currEntry.toString());
-        }
-
-//        if (this.table[tableIndex] == null) {
-//            System.out.println("### this.table[tableIndex]");
-//            this.table[tableIndex] = new LinkedList<>();
-//            this.table[tableIndex].add(newEntry);
-//            tableSize++;
-//        }
-
         if (currEntry == null) {
-            System.out.println("### newEntry == null");
-//            this.table[tableIndex] = newEntry;
             this.table[tableIndex] = new LinkedList<>();
             this.table[tableIndex].add(newEntry);
             tableSize++;
         } else {
-            System.out.println("### newEntry != null");
             while (currEntry.nextEntry != null) {
-                System.out.println("### newEntry.nextEntry != null");
                 if (currEntry.key.equals(key)) {
                     currEntry.value = value;   //덮어쓴다
                     return;
@@ -165,22 +82,13 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
             }
 
             if (currEntry.key.equals(key)) {
-                System.out.println("### newEntry.key.equals(key)");
                 currEntry.value = value;   //덮어쓴다
             } else {
-                System.out.println("### newEntry.nextEntry = newEntry");
                 //신규추가
                 currEntry.nextEntry = newEntry;
                 tableSize++;
             }
         }
-        System.out.println("======= put 2 start ================");
-        for (int i = 0; i < capacity; i++) {
-            if (this.table != null) {
-                System.out.println("i=" + this.table[i]);
-            }
-        }
-        System.out.println("======= put 2 end ================");
     }
 
     //O(1)
@@ -200,7 +108,6 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         Set<Map.Entry<K, V>> set = new HashSet<>();
         for (int i = 0; i < this.capacity; i++) {
             if (this.table[i] != null) {
-//                set.add(this.table[i]);
                 set.add(getEntry(this.table[i]));
             }
         }
@@ -218,9 +125,6 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         }
         sRtn += '}';
         return sRtn;
-//        return "CustomHashMapUsingLinkedList{"
-//                + Arrays.toString(table) +
-//                '}';
     }
 
 }
@@ -231,22 +135,11 @@ class CustomEntryToCHMUL<K, V> implements Map.Entry<K, V> {
     V value;
     CustomEntryToCHMUL<K,V> nextEntry;
 
-//    CustomEntryToCHMUL() {
-//        this.key = null;
-//        this.value = null;
-//        this.nextEntry = null;
-//    }
-
     CustomEntryToCHMUL(K key, V value, CustomEntryToCHMUL<K,V> nextEntry) {
         this.key = key;
         this.value = value;
         this.nextEntry = nextEntry;
     }
-
-//    CustomEntryToCHMUL(K key, V value) {
-//        this.key = key;
-//        this.value = value;
-//    }
 
     @Override
     public K getKey() {
