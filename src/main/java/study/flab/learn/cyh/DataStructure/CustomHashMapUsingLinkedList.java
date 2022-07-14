@@ -34,33 +34,60 @@ public class CustomHashMapUsingLinkedList<K, V> implements Serializable {
         int tableIndex = key.hashCode() % this.capacity;
         CustomEntryToCHMUL<K,V> currEntry = this.table[tableIndex];
 
+//        while (currEntry != null) {
+//            if (currEntry.key.equals(key)) {
+//                return currEntry == null ? null : currEntry.value;
+//            }
+//            currEntry = currEntry.nextEntry;
+//        }
+//        return null;
+
+
+        System.out.println("### tableIndex=" + tableIndex);
+        if (currEntry != null) {
+            System.out.println("### currEntry.toString()=" + currEntry.toString());
+        }
+        System.out.println("======= get start ================");
+        for (int i = 0; i < 10; i++) {
+            System.out.println("i=" + this.table[i]);
+        }
+        System.out.println("======= get end ================");
+
         while (currEntry != null) {
+            System.out.println("### get currEntry != null");
             if (currEntry.key.equals(key)) {
-                return currEntry == null ? null : currEntry.value;
+                System.out.println("### get currEntry.key.equals(key)");
+                return currEntry.value;
             }
             currEntry = currEntry.nextEntry;
         }
+        System.out.println("======= get 2 start ================");
+        for (int i = 0; i < 10; i++) {
+            System.out.println("i=" + this.table[i]);
+        }
+        System.out.println("======= get 2 end ================");
         return null;
+
     }
 
-    //O(n)
-    private CustomEntryToCHMUL<K, V>[] incCapacitySize() {
-        int prevCapacity = this.capacity;
-        this.capacity *= 2;
-        CustomEntryToCHMUL<K, V>[] newTable = new CustomEntryToCHMUL[this.capacity];
-        for (int i = 0; i < prevCapacity; i++) {
-            if (this.table[i] != null) {
-                newTable[i] = this.table[i];
-            }
-        }
-        return newTable;
-    }
+//    //O(n)
+//    private CustomEntryToCHMUL<K, V>[] incCapacitySize() {
+//        int prevCapacity = this.capacity;
+//        this.capacity *= 2;
+//        CustomEntryToCHMUL<K, V>[] newTable = new CustomEntryToCHMUL[this.capacity];
+//        for (int i = 0; i < prevCapacity; i++) {
+//            if (this.table[i] != null) {
+//                newTable[i] = this.table[i];
+//            }
+//        }
+//        return newTable;
+//    }
 
     //amortised O(1)
     public void put(K key, V value) {
-        if (loadFactor * this.capacity <= this.tableSize) {
-            this.table = incCapacitySize();
-        }
+//        if (loadFactor * this.capacity <= this.tableSize) {
+//            this.table = incCapacitySize();
+//        }
 
         CustomEntryToCHMUL<K, V> newEntry = new CustomEntryToCHMUL<>(key, value, null);
 
