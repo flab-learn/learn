@@ -1,4 +1,6 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection.linkedlist;
+
+import study.flab.learn.haen.datastructure.collection.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection.arraylist;
 
 import java.util.ArrayList;
 import java.util.Collection;

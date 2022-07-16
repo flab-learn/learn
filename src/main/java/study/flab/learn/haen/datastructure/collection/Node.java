@@ -1,4 +1,4 @@
-package study.flab.learn.haen.DataStructure;
+package study.flab.learn.haen.datastructure.collection;
 
 public class Node<E> {
     public E data;
