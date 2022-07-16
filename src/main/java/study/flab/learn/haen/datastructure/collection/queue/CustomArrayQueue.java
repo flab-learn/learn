@@ -32,6 +32,7 @@ public class CustomArrayQueue<E> {
         return size <= 0;
     }
 
+    // O(1) / worst: O(n)
     void enqueue(E e) {
         if(capacity <= size) {
             reAllocCapacity();
@@ -42,6 +43,7 @@ public class CustomArrayQueue<E> {
         size++;
     }
 
+    // O(1)
     E dequeue() {
         if(isEmpty()) {
             return null;
@@ -55,6 +57,7 @@ public class CustomArrayQueue<E> {
         return (E) data;
     }
 
+    // O(1)
     E peek() {
         if(isEmpty()) {
             return null;
